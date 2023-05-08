@@ -1,4 +1,6 @@
-export default class Task {
+import itemsDisplay from "./index.js";
+
+export class Task {
   constructor() {
     this.todo = JSON.parse(localStorage.getItem("storage-task")) ?? [];
   }
@@ -27,3 +29,27 @@ export default class Task {
     this.todo = data;
   }
 }
+
+export const eraseTicked = (tasks) => {
+  tasks.todo = tasks.todo.filter((task) => !task.completed);
+  for (let i = 0; i < tasks.todo.length; i += 1) {
+    tasks.todo[i].index = i + 1;
+  }
+};
+
+export const handleTasks = () => {
+  const task = document.createElement("div");
+
+  task.className = "todo-el";
+  const isTicked = tasks.todo[i].completed ? "checked" : "";
+  task.innerHTML = `
+      <input type="checkbox" ${isTicked} onchange="toggleCheckbox(${i})">
+      <p id="edit" contenteditable="true">${tasks.todo[i].description}</p>
+      <div>
+      <span class="trash" onclick="remove(${i})"><i class="fa-solid fa-trash-can">  </i></span>
+        <button class="dots"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+      </div>
+      `;
+  itemsDisplay.appendChild(task);
+};
+
